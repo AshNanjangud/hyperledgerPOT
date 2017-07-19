@@ -1,0 +1,77 @@
+/**
+* My car leasing network
+*/
+namespace org.acme.mynetwork
+asset Car identified by carModel {
+o String carModel 
+o String description
+--> Owner carOwner
+}
+
+asset CarBlueprint identified by bluePrintId {
+o String bluePrintId 
+o String bluePrintName
+o String bluePrintType
+o String bluePrintExpiryDt
+-->Owner prototypeOwner
+}
+
+participant Owner identified by ownerId {
+o String ownerId 
+o String firstName
+o String lastName
+}
+
+participant Dealer extends Owner {
+    o String ownerType default = "Dealer"
+}
+
+participant Regulator extends Owner {
+    o String ownerType default = "Regulator"
+}
+
+participant Manufacturer extends Owner {
+    o String ownerType default = "Manufacturer"
+}
+participant LeasingCo extends Owner {
+    o String ownerType default = "LeasingCo"
+}
+participant Leasee extends Owner {
+    o String ownerType default= "Leasee"
+}
+  
+participant ScrapMerchant extends Owner {
+   o String ownerType default = "ScrapMerchant"
+}
+
+
+
+transaction TransfertoLeasingCo {
+--> Car car
+--> Owner leasingCo
+}
+
+transaction TransfertoDealer {
+--> Car car
+--> Owner dealer
+}
+
+transaction TransfertoLeasee {
+  -->Car car
+  -->Owner leasee
+}
+
+transaction TransfertoScrapMerchant {
+  -->Car car
+  -->Owner scrapMerchant
+}
+
+transaction TransferBluePrint {
+--> CarBlueprint carBlueprint
+--> Owner manufacturer
+}
+
+transaction TransferCarFromLeaseeToLeasingCo {
+ 	-->Car car
+    -->Owner newOwner
+}
